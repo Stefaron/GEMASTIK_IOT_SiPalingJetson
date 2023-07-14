@@ -3,7 +3,6 @@ package com.example.fyp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -69,7 +68,7 @@ public class DnA_Activity extends AppCompatActivity implements Scene.OnUpdateLis
             arFragment.getArSceneView().getScene().addChild(anchorNode);
             node.select();
 
-            audio.generate_audio((String) tvDistance.getText());
+            audio.generateAudio((String) tvDistance.getText());
         });
     }
 
