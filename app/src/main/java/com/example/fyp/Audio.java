@@ -22,6 +22,7 @@ public class Audio implements TextToSpeech.OnInitListener {
     @Override
     public void onInit(int status) {
         if (status == TextToSpeech.SUCCESS) {
+            Log.i("TTS", "avaliable language : "+ tts.getAvailableLanguages().toString());
             int result = tts.setLanguage(loc);
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.i("TTS", "This Language is not supported");
@@ -34,6 +35,9 @@ public class Audio implements TextToSpeech.OnInitListener {
     }
 
     public void generateAudio(String value) {
-        tts.speak(value, TextToSpeech.QUEUE_FLUSH, null, null);
+        if(!tts.isSpeaking()){
+
+            tts.speak(value, TextToSpeech.QUEUE_FLUSH, null, null);
+        }
     }
 }

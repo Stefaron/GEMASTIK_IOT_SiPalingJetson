@@ -13,11 +13,12 @@ import com.google.mlkit.vision.objects.ObjectDetection;
 import com.google.mlkit.vision.objects.ObjectDetector;
 import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions;
 import com.otaliastudios.cameraview.CameraView;
-import com.otaliastudios.cameraview.Frame;
-import com.otaliastudios.cameraview.FrameProcessor;
+import com.otaliastudios.cameraview.frame.Frame;
+import com.otaliastudios.cameraview.frame.FrameProcessor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
 
 public class ObjectDetectionActivity extends AppCompatActivity {
 
@@ -36,7 +37,7 @@ public class ObjectDetectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detection);
 
-        audio = new Audio(this, "en", "GB");
+        audio = new Audio(this, "id", "ID");
         cameraView = findViewById(R.id.cameraView);
         parentLayout = findViewById(R.id.parentLayout);
         options = new ObjectDetectorOptions.Builder()
@@ -73,7 +74,7 @@ public class ObjectDetectionActivity extends AppCompatActivity {
 
     private InputImage getInputImageFromFrame(Frame frame) {
         byte[] data = frame.getData();
-        return InputImage.fromByteArray(data, frame.getSize().getWidth(), frame.getSize().getHeight(), frame.getRotation(), InputImage.IMAGE_FORMAT_NV21);
+        return InputImage.fromByteArray(data, frame.getSize().getWidth(), frame.getSize().getHeight(), frame.getRotationToUser(), InputImage.IMAGE_FORMAT_NV21);
     }
 
     private void processImage(InputImage inputImage) {
@@ -93,10 +94,10 @@ public class ObjectDetectionActivity extends AppCompatActivity {
     }
 
     private void processResults(List<DetectedObject> detectedObjects) {
+        if (this.parentLayout.getChildCount() > 1) {
+            this.parentLayout.removeViewAt(1);
+        }
         for (DetectedObject i : detectedObjects) {
-            if (this.parentLayout.getChildCount() > 1) {
-                this.parentLayout.removeViewAt(1);
-            }
             Rect boundingBox = i.getBoundingBox();
             //Log.d("MainActivity", "processResults: " + i.getLabels().toString());
             String text;
